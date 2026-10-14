@@ -48,7 +48,7 @@ python Diff_MAE/Houston_main.py --encoder_model ./backbone_pretrain.pth --unet3d
 
 The final command assumes that the selected diffusion checkpoint is available in the repository root. If the dataset or training sample size changes, retrain the models and retune the relevant hyperparameters for the new experimental setting.
 
-**Historical features.** `Diff_MAE/Houston_main.py` stores `features_k*.pt` under `10seed_20epoch_features/seed_<seed>/` and revisits these files during training. Before repeating an experiment with the same seed, delete its historical features or pass `--overwrite_seed_features`; otherwise, features from an earlier run could be reused. 
+**Historical features.** `Diff_MAE/Houston_main.py` stores `features_k*.pt` under `features/seed_<seed>/` and revisits these files during training. Before repeating an experiment with the same seed, delete its historical features or pass `--overwrite_seed_features`; otherwise, features from an earlier run could be reused. 
 
 **Implementation notes.** The mamba-based encoder builds on [*S2Mamba: A Spatial-spectral State Space Model for Hyperspectral Image Classification*](https://doi.org/10.1109/TGRS.2025.3530993) ([official code](https://github.com/PURE-melo/S2Mamba)). Diffusion model training refers to [*SpectralDiff: A Generative Framework for Hyperspectral Image Classification with Diffusion Models*](https://ieeexplore.ieee.org/document/10234379) ([official diffusion code](https://github.com/chenning0115/spectraldiff_diffusion)).
 
@@ -74,4 +74,8 @@ B. Xi, X. Wen, X. Tan, J. Li, Y. Li, Z. Li, and P. Gamba, "From Generation to Ad
 
 Copyright © 2026 Bobo Xi and Xinyu Wen.
 
-This program is free software: you may redistribute it and/or modify it under the terms of the [GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html). It is distributed without any warranty; see the license for details.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
