@@ -23,7 +23,7 @@ The workflow comprises four stages:
 
 1. **Source-domain backbone pretraining.** Run `mamba_encoder_pretraining/demo_mamba.py` to train the mamba-based encoder defined in `mamba_encoder_pretraining/backbone.py`. Configure the source dataset in `mamba_encoder_pretraining/utils.py`. The output is the full-model checkpoint `backbone_pretrain.pth`.
 
-2. **Target-domain feature extraction.** Run `mamba_encoder_pretraining/extract_feature.py` with the pretrained backbone. It extracts target-domain latent features without updating backbone parameters and saves `_features_final_20260915_Houston.npy`.
+2. **Target-domain feature extraction.** Run `mamba_encoder_pretraining/extract_feature.py` with the pretrained backbone. It extracts target-domain latent features without updating backbone parameters and saves `_features_Houston.npy`.
 
 3. **Unconditional diffusion pretraining.** Run `diffusion_pretraining/train_3dconvunet.py` on the extracted features. The U-Net and diffusion objective are implemented in `diffusion_pretraining/unet3d.py` and `diffusion_pretraining/diffusion.py`. Checkpoints are saved as `feature_diffusion_epoch_<epoch>.pt`.
 
