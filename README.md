@@ -21,7 +21,7 @@ Cross-domain hyperspectral image (HSI) classification via unsupervised domain ad
 
 The workflow comprises four stages:
 
-1. **Source-domain backbone pretraining.** Run `mamba_encoder_pretraining/demo_mamba.py` to train the S2Mamba backbone defined in `mamba_encoder_pretraining/backbone.py`. Configure the source dataset in `mamba_encoder_pretraining/utils.py`. The output is the full-model checkpoint `backbone_pretrain.pth`.
+1. **Source-domain backbone pretraining.** Run `mamba_encoder_pretraining/demo_mamba.py` to train the mamba-based encoder defined in `mamba_encoder_pretraining/backbone.py`. Configure the source dataset in `mamba_encoder_pretraining/utils.py`. The output is the full-model checkpoint `backbone_pretrain.pth`.
 
 2. **Target-domain feature extraction.** Run `mamba_encoder_pretraining/extract_feature.py` with the pretrained backbone. It extracts target-domain latent features without updating backbone parameters and saves `_features_final_20260915_Houston.npy`.
 
@@ -33,20 +33,22 @@ From the repository root, run:
 
 ```bash
 python mamba_encoder_pretraining/demo_mamba.py --dataset Houston13 --flag train
-# Output: ./backbone_pretrain.pth (full S2Mamba model)
+# Output: ./backbone_pretrain.pth (full mamba-based encoder)
 
 python mamba_encoder_pretraining/extract_feature.py --model_path ./backbone_pretrain.pth
-# Output: ./_features_final_20260915_Houston.npy
+# Output: _features_final_20260915_Houston.npy (at the path set in extract_feature.py)
 
 python diffusion_pretraining/train_3dconvunet.py
-# Output: ./feature_diffusion_epoch_<epoch>.pt
+# Output: feature_diffusion_epoch_<epoch>.pt (at the path set in train_3dconvunet.py)
 
-python Diff_MAE/Houston_main.py --s2mamba_model ./backbone_pretrain.pth --unet3d_model ./feature_diffusion_epoch_<epoch>.pt
+python Diff_MAE/Houston_main.py --encoder_model ./backbone_pretrain.pth --unet3d_model ./feature_diffusion_epoch_100.pt
 ```
 
-If the dataset or training sample size changes, retrain the models and retune the relevant hyperparameters for the new experimental setting.
+The final command assumes that the selected diffusion checkpoint is available in the repository root. If the dataset or training sample size changes, retrain the models and retune the relevant hyperparameters for the new experimental setting.
 
 **Historical features.** `Diff_MAE/Houston_main.py` stores `features_k*.pt` under `10seed_20epoch_features/seed_<seed>/` and revisits these files during training. Before repeating an experiment with the same seed, delete its historical features or pass `--overwrite_seed_features`; otherwise, features from an earlier run could be reused. 
+
+**Implementation notes.** The mamba-based encoder builds on [*S2Mamba: A Spatial-spectral State Space Model for Hyperspectral Image Classification*](https://doi.org/10.1109/TGRS.2025.3530993) ([official code](https://github.com/PURE-melo/S2Mamba)). Diffusion model training refers to [*SpectralDiff: A Generative Framework for Hyperspectral Image Classification with Diffusion Models*](https://ieeexplore.ieee.org/document/10234379) ([official diffusion code](https://github.com/chenning0115/spectraldiff_diffusion)).
 
 ## References
 
