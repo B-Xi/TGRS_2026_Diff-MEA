@@ -17,21 +17,9 @@
 
 Cross-domain hyperspectral image (HSI) classification via unsupervised domain adaptation (UDA) is practical for Earth observation, yet its performance is often limited by severe distribution shifts. Existing methods typically seek a one-step nonlinear mapping in a highly non-convex optimization space, which risks representation collapse and semantic distortion. To address this issue, we propose a diffusion-guided manifold evolution adaptation (Diff-MEA) framework. Instead of using generative models merely for data augmentation, Diff-MEA reformulates UDA as a continuous manifold evolution process that decouples macroscopic domain gaps into tractable micro-shifts via gradual diffusion transitions. To facilitate this evolution, we introduce a synergistic semantic-boundary co-evolution (SSBCE) mechanism, which alternates between a semantic anchoring (SA) sub-phase to penalize generative drift and a boundary adaptation (BA) sub-phase to accommodate target-shifted manifolds. To realize these phases, a memory-transformer domain adapter (MTDA) integrates salient peak response selection (SPRS) and local feature mean aggregation (LFMA) to construct persistent memory tokens, which serve as robust semantic anchors and support dynamic decision boundary expansion. Extensive experiments on three benchmark datasets demonstrate that Diff-MEA consistently outperforms state-of-the-art methods in handling severe domain gaps.
 
-### Data and Checkpoint Locations
-
-Run the commands below from the repository root. Paths beginning with `./` are relative to that directory.
-
-| File | Location or setting | Role |
-| --- | --- | --- |
-| Houston13 source-domain `.mat` file | Set the empty `loadmat('')` path for `Houston13` in `mamba_encoder_pretraining/utils.py`; the file must contain `input`, `TR`, and `TE`. | Backbone pretraining |
-| `houston_30.mat` | `/mnt/HDD/data/wxyxier/jiaotidiff/20260915_开源模型/houston_30.mat`, as specified in `Diff_MAE/utils.py`. A copy in the repository root is not read unless this path is changed. | Main adaptation: source-domain training |
-| `Houston18_split.mat` | `/mnt/HDD/data/wxyxier/S2MABA/data/Houston18_split.mat`, as specified in `Diff_MAE/utils.py`. | Target-domain feature extraction and evaluation |
-| `backbone_pretrain.pth` | `./backbone_pretrain.pth` after source-domain pretraining; pass this path to `--model_path` and `--encoder_model`. | Feature extraction and main adaptation |
-| `_features_Houston.npy` | `./_features_Houston.npy`, written by `extract_feature.py` and read by `train_3dconvunet.py`. | Diffusion pretraining |
-| `feature_diffusion_epoch_100.pt` | `./feature_diffusion_epoch_100.pt`, or replace the path in `--unet3d_model` with another diffusion checkpoint. | Main adaptation |
-| Main adaptation checkpoints | `./models/seed_<seed>/best_epoch_model.pth` and `./models/seed_<seed>/final_model.pth`. | Outputs of main adaptation |
-
 ## Training Process
+
+Place the datasets and pretrained checkpoints at the locations specified in the corresponding scripts. The datasets and pretrained weights are available from [Diff-MEA_Model](https://pan.baidu.com/s/1nXknCyMkgzktRii4IdiJQA) (access code: `erua`).
 
 The workflow comprises four stages:
 
