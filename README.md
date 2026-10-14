@@ -8,7 +8,7 @@
 [Paper on IEEE Xplore](https://ieeexplore.ieee.org/document/11690676)
 
 <p align="center">
-  <img src="DIFFMEA.jpg" width="90%" alt="Architecture of the Diff-MEA framework">
+  <img src="DIFFMEA.png" width="90%" alt="Architecture of the Diff-MEA framework">
 </p>
 
 <p align="center"><em>Fig. 1. Overall architecture of Diff-MEA for cross-scene HSI classification.</em></p>
@@ -27,19 +27,19 @@ The workflow comprises four stages:
 
 3. **Unconditional diffusion pretraining.** Run `diffusion_pretraining/train_3dconvunet.py` on the extracted features. The U-Net and diffusion objective are implemented in `diffusion_pretraining/unet3d.py` and `diffusion_pretraining/diffusion.py`. Checkpoints are saved as `feature_diffusion_epoch_<epoch>.pt`.
 
-4. **Main adaptation.** Run `Diff_MAE/Houston_main.py` with both pretrained checkpoints. SSBCE generates transitional features, while `SubPhase_SA` and `SubPhase_BA` perform the two adaptation updates. The default protocol runs 20 epochs for seeds `93722, 96076, 5246, 58731, 73315, 94320, 13579, 52983, 75751, 14950`.
+4. **Main adaptation.** Run `Diff_MAE/Houston_main.py` with both pretrained checkpoints. SSBCE generates transitional features, while `SubPhase_SA` and `SubPhase_BA` perform the two adaptation updates.
 
 From the repository root, run:
 
 ```bash
 python mamba_encoder_pretraining/demo_mamba.py --dataset Houston13 --flag train
-# Output: ./backbone_pretrain.pth (full mamba-based encoder)
+# Output: ./backbone_pretrain.pth
 
 python mamba_encoder_pretraining/extract_feature.py --model_path ./backbone_pretrain.pth
-# Output: _features_final_20260915_Houston.npy (at the path set in extract_feature.py)
+# Output: _features_final_20260915_Houston.npy 
 
 python diffusion_pretraining/train_3dconvunet.py
-# Output: feature_diffusion_epoch_<epoch>.pt (at the path set in train_3dconvunet.py)
+# Output: feature_diffusion_epoch_<epoch>.pt 
 
 python Diff_MAE/Houston_main.py --encoder_model ./backbone_pretrain.pth --unet3d_model ./feature_diffusion_epoch_100.pt
 ```
